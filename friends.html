@@ -1,0 +1,202 @@
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ConnectHub - Friends</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+  }
+  .header {
+    background-color: #1877f2;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+  }
+  .sidebar {
+    flex: 1;
+    min-width: 200px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-right: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .main-content {
+    flex: 3;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .friend-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  .friend-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  .friend-card:hover {
+    transform: translateY(-5px);
+  }
+  .friend-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  .friend-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .friend-info {
+    color: #65676b;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .friend-action {
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .friend-action:hover {
+    background-color: #166fe5;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+  }
+  .nav-menu {
+    list-style-type: none;
+    padding: 0;
+  }
+  .nav-menu li {
+    margin-bottom: 10px;
+  }
+  .nav-menu a {
+    text-decoration: none;
+    color: #1877f2;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  .nav-menu a:hover {
+    color: #165aad;
+  }
+  .search-bar {
+    margin-bottom: 20px;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">ConnectHub</div>
+  </header>
+  
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Menu</h2>
+      <ul class="nav-menu">
+        <li><a href="home.html
+        <li><a href="profile.html"
+        <li><a href="messages.html"
+        <li><a href="friends.html"
+        <li><a href="groups.html"
+      </ul>
+    </aside>
+    
+    <main class="main-content">
+      <h1>Friends</h1>
+      <div class="search-bar">
+        <input type="text" id="friend-search" placeholder="Search friends...">
+      </div>
+      <div class="friend-list" id="friend-list">
+        <!-- Friend cards will be dynamically added here -->
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const friends = [
+      { id: 1, name: "saharaa", avatar: "https://ui-avatars.com/api/?name=Alice+Smith&size=100", info: "kawawa." },
+      { id: 2, name: "mika", avatar: "https://ui-avatars.com/api/?name=Bob+Johnson&size=100", info: "kawawa." },
+      { id: 3, name: "richelyn", avatar: "https://ui-avatars.com/api/?name=Carol+Williams&size=100", info: "kawawa" },
+      { id: 4, name: "ella", avatar: "https://ui-avatars.com/api/?name=David+Brown&size=100", info: "kawawa" },
+      { id: 5, name: "jhermae", avatar: "https://ui-avatars.com/api/?name=Eva+Davis&size=100", info: "kawawa" },
+      { id: 6, name: "jhermie", avatar: "https://ui-avatars.com/api/?name=Frank+Miller&size=100", info: "kawawa" },
+      { id: 7, name: "john", avatar: "https://ui-avatars.com/api/?name=Grace+Lee&size=100", info: "kawawa" },
+      { id: 8, name: "adelina", avatar: "https://ui-avatars.com/api/?name=Henry+Wilson&size=100", info: "kawawa" }
+    ];
+
+    function createFriendCard(friend) {
+      return `
+        <div class="friend-card" data-id="${friend.id}">
+          <img src="${friend.avatar}" alt="${friend.name}" class="friend-avatar">
+          <div class="friend-name">${friend.name}</div>
+          <div class="friend-info">${friend.info}</div>
+          <button class="friend-action">Message</button>
+        </div>
+      `;
+    }
+
+    function renderFriends(friendsToRender) {
+      const friendList = document.getElementById('friend-list');
+      friendList.innerHTML = friendsToRender.map(createFriendCard).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderFriends(friends);
+
+      const searchInput = document.getElementById('friend-search');
+      searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredFriends = friends.filter(friend => 
+          friend.name.toLowerCase().includes(searchTerm) ||
+          friend.info.toLowerCase().includes(searchTerm)
+        );
+        renderFriends(filteredFriends);
+      });
+
+      document.getElementById('friend-list').addEventListener('click', (e) => {
+        if (e.target.classList.contains('friend-action')) {
+          const friendId = e.target.closest('.friend-card').dataset.id;
+          const friend = friends.find(f => f.id === parseInt(friendId));
+          alert(`Opening chat with ${friend.name}`);
+          // Here you would typically redirect to the messages page or open a chat modal
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,726 @@
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ConnectHub - Your Social Media Universe</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+  }
+  .header {
+    background-color: #1877f2;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 60px auto 0;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .sidebar {
+    flex: 1;
+    min-width: 200px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-right: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 80px;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  .main-content {
+    flex: 3;
+    min-width: 300px;
+  }
+  .post {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+  .post:hover {
+    transform: translateY(-5px);
+  }
+  .post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .post-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .action-button {
+    background-color: #e4e6eb;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .action-button:hover {
+    background-color: #d8dadf;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+  }
+  .nav-menu {
+    list-style-type: none;
+    padding: 0;
+  }
+  .nav-menu li {
+    margin-bottom: 10px;
+  }
+  .nav-menu a {
+    text-decoration: none;
+    color: #1877f2;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  .nav-menu a:hover {
+    color: #165aad;
+  }
+  .create-post {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .create-post textarea {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+    resize: none;
+  }
+  .create-post button {
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .create-post button:hover {
+    background-color: #165aad;
+  }
+  .trending {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .trending h3 {
+    margin-top: 0;
+  }
+  .trending ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  .trending li {
+    margin-bottom: 10px;
+  }
+  .trending a {
+    text-decoration: none;
+    color: #1877f2;
+  }
+  .messages {
+    display: none;
+  }
+  .message {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .message-content {
+    margin-bottom: 5px;
+  }
+  .message-actions {
+    text-align: right;
+  }
+  .message-actions button {
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .comment-section {
+    margin-top: 10px;
+    border-top: 1px solid #e4e6eb;
+    padding-top: 10px;
+  }
+  .comment {
+    margin-bottom: 10px;
+  }
+  .comment-input {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .friend-item, .friend-request-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .friend-actions button, .friend-request-actions button {
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  #loading {
+    text-align: center;
+    padding: 10px;
+    font-style: italic;
+    color: #777;
+  }
+  #refresh-feed {
+    background-color: #42b72a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+  }
+  #refresh-feed:hover {
+    background-color: #36a420;
+  }
+</style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">ConnectHub</div>
+  </header>
+  
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Menu</h2>
+      <ul class="nav-menu">
+        <li><a href="home.html"
+        <li><a href="profile.html"
+        <li><a href="messages.html"
+        <li><a href="friends.html"
+        <li><a href="groups.html"
+      </ul>
+      <div id="friends-list" style="display: none;">
+        <h3>Friends</h3>
+        <ul id="friends-ul"></ul>
+        <h3>Friend Requests</h3>
+        <ul id="friend-requests-ul"></ul>
+      </div>
+    </aside>
+    
+    <main class="main-content">
+      <div id="home-content">
+        <h2>Welcome to Your News Feed</h2>
+        <p>Stay updated with your friends and the world around you.</p>
+        <button id="refresh-feed">Refresh Feed</button>
+        <div class="create-post">
+          <textarea placeholder="What's on your mind?"></textarea>
+          <select multiple>
+            <option value="">Tag friends</option>
+          </select>
+          <button id="post-button">Post</button>
+        </div>
+
+        <div id="post-container">
+          <!-- Posts will be dynamically added here -->
+        </div>
+        <div id="loading" style="display: none;">Loading more posts...</div>
+      </div>
+
+      <div id="messages-content" class="messages" style="display: none;">
+        <h2>Messages</h2>
+        <div id="message-container">
+          <!-- Messages will be dynamically added here -->
+        </div>
+        <div class="create-post">
+          <textarea placeholder="Type a new message" id="new-message-input"></textarea>
+          <button id="send-message-button">Send</button>
+        </div>
+      </div>
+
+      <div id="profile-content" style="display: none;">
+        <h2>Your Profile</h2>
+        <div id="profile-info">
+          <img src="c:\Users\PC 11\Downloads\2.jfifs" alt="Your avatar" class="avatar" style="width: 100px; height: 100px;">
+          <h3>Your Name</h3>
+          <p>Bio: Tell us about yourself</p>
+          <button id="edit-profile">Edit Profile</button>
+        </div>
+        <div id="profile-posts">
+          <h3>Your Posts</h3>
+          <p>aw aw</p>
+        </div>
+      </div>
+
+      <div id="friends-content" style="display: none;">
+        <h2>Friends</h2>
+        <div id="friends-container">
+          <!-- Friends list will be dynamically added here -->
+        </div>
+        <h3>Friend Requests</h3>
+        <div id="friend-requests-container">
+          <!-- Friend requests will be dynamically added here -->
+        </div>
+      </div>
+
+      <div id="groups-content" style="display: none;">
+        <h2>Your Groups</h2>
+        <div id="groups-container">
+          <!-- Groups will be dynamically added here -->
+        </div>
+        <button id="create-group">Create New Group</button>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="trending">
+        <h3>Trending Topics</h3>
+        <ul id="trending-topics">
+          <!-- Trending topics will be dynamically added here -->
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <script src="c:\Users\PC 11\Downloads\3.jfif"></script>
+  <script>
+    let posts = [
+      {
+        id: 1,
+        author: 'John Doe',
+        content: 'Just had an amazing day at the beach! The sunset was breathtaking. 🌅 #BeachDay #SummerVibes',
+        likes: 15,
+        comments: []
+      },
+      {
+        id: 2,
+        author: 'Jane Smith',
+        content: 'Excited to announce that I\'ve started a new job at TechCorp! Looking forward to this new chapter. 🎉 #NewBeginnings #CareerMove',
+        likes: 32,
+        comments: []
+      },
+      {
+        id: 3,
+        author: 'Mike Johnson',
+        content: 'Just finished my first marathon! It was tough, but so rewarding. Thanks to everyone who supported me along the way! 🏃‍♂️🏅 #MarathonFinisher #PersonalAchievement',
+        likes: 45,
+        comments: []
+      }
+    ];
+
+    let friends = [
+      { id: 1, name: 'sarah' },
+      { id: 2, name: 'sahara' },
+      { id: 3, name: 'angging' }
+    ];
+
+    let friendRequests = [
+      { id: 4, name: 'bahog nawng' },
+      { id: 5, name: 'nga nga' }
+    ];
+
+    let messages = [
+      { id: 1, sender: 'alice', content: 'Hey, how are you doing?', timestamp: '2023-05-10 10:30:00' },
+      { id: 2, sender: 'marlou', content: 'Did you see the latest movie?', timestamp: '2023-05-10 11:45:00' }
+    ];
+
+    let groups = [
+      { id: 1, name: 'dels', members: 1520 },
+      { id: 2, name: 'yooooo', members: 3200 },
+      { id: 3, name: 'iro', members: 450 }
+    ];
+
+    let currentPage = 1;
+    const postsPerPage = 5;
+
+    function createPostElement(post) {
+      const postElement = document.createElement('div');
+      postElement.className = 'post';
+      postElement.innerHTML = `
+        <div class="post-header">
+          <img src="https://ui-avatars.com/api/?name=${post.author}" alt="${post.author} avatar" class="avatar">
+          <h3>${post.author}</h3>
+        </div>
+        <p>${post.content}</p>
+        ${post.taggedFriends ? `<p>Tagged: ${post.taggedFriends.join(', ')}</p>` : ''}
+        <div class="post-actions">
+          <button class="action-button like-button" data-post-id="${post.id}">Like (${post.likes})</button>
+          <button class="action-button comment-button" data-post-id="${post.id}">Comment (${post.comments.length})</button>
+          <button class="action-button">Share</button>
+        </div>
+        <div class="comment-section" id="comments-${post.id}">
+          ${post.comments.map(comment => `
+            <div class="comment">
+              <strong>${comment.author}:</strong> ${comment.content}
+            </div>
+          `).join('')}
+          <input type="text" class="comment-input" placeholder="Write a comment..." data-post-id="${post.id}">
+        </div>
+      `;
+      return postElement;
+    }
+
+    function loadMorePosts() {
+      const start = (currentPage - 1) * postsPerPage;
+      const end = start + postsPerPage;
+      const newPosts = posts.slice(start, end);
+
+      newPosts.forEach(post => {
+        document.getElementById('post-container').appendChild(createPostElement(post));
+      });
+
+      currentPage++;
+
+      if (end >= posts.length) {
+        document.removeEventListener('scroll', checkScroll);
+      }
+    }
+
+    function checkScroll() {
+      const scrollPosition = window.innerHeight + window.pageYOffset;
+      const pageBottom = document.documentElement.offsetHeight - 100;
+
+      if (scrollPosition >= pageBottom) {
+        document.getElementById('loading').style.display = 'block';
+        setTimeout(() => {
+          loadMorePosts();
+          document.getElementById('loading').style.display = 'none';
+        }, 1000);
+      }
+    }
+
+    function renderPosts() {
+      const postContainer = document.getElementById('post-container');
+      postContainer.innerHTML = '';
+      posts.forEach(post => {
+        postContainer.appendChild(createPostElement(post));
+      });
+    }
+
+    function renderFriends() {
+      const friendsContainer = document.getElementById('friends-container');
+      friendsContainer.innerHTML = '';
+      friends.forEach(friend => {
+        const friendElement = document.createElement('div');
+        friendElement.className = 'friend-item';
+        friendElement.innerHTML = `
+          <span>${friend.name}</span>
+          <div class="friend-actions">
+            <button class="message-friend" data-friend-id="${friend.id}">Message</button>
+            <button class="remove-friend" data-friend-id="${friend.id}">Remove</button>
+          </div>
+        `;
+        friendsContainer.appendChild(friendElement);
+      });
+    }
+
+    function renderFriendRequests() {
+      const requestsContainer = document.getElementById('friend-requests-container');
+      requestsContainer.innerHTML = '';
+      friendRequests.forEach(request => {
+        const requestElement = document.createElement('div');
+        requestElement.className = 'friend-request-item';
+        requestElement.innerHTML = `
+          <span>${request.name}</span>
+          <div class="friend-request-actions">
+            <button class="accept-request" data-friend-id="${request.id}">Accept</button>
+            <button class="decline-request" data-friend-id="${request.id}">Decline</button>
+          </div>
+        `;
+        requestsContainer.appendChild(requestElement);
+      });
+    }
+
+    function renderMessages() {
+      const messageContainer = document.getElementById('message-container');
+      messageContainer.innerHTML = '';
+      messages.forEach(message => {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message';
+        messageElement.innerHTML = `
+          <div class="message-header">
+            <strong>${message.sender}</strong>
+            <span>${message.timestamp}</span>
+          </div>
+          <div class="message-content">${message.content}</div>
+          <div class="message-actions">
+            <button class="reply-button" data-message-id="${message.id}">Reply</button>
+          </div>
+        `;
+        messageContainer.appendChild(messageElement);
+      });
+    }
+
+    function renderGroups() {
+      const groupsContainer = document.getElementById('groups-container');
+      groupsContainer.innerHTML = '';
+      groups.forEach(group => {
+        const groupElement = document.createElement('div');
+        groupElement.className = 'group-item';
+        groupElement.innerHTML = `
+          <h3>${group.name}</h3>
+          <p>${group.members} members</p>
+          <button class="join-group" data-group-id="${group.id}">Join Group</button>
+        `;
+        groupsContainer.appendChild(groupElement);
+      });
+    }
+
+    function showContent(contentId) {
+      const contents = ['home-content', 'messages-content', 'profile-content', 'friends-content', 'groups-content'];
+      contents.forEach(content => {
+        document.getElementById(content).style.display = content === contentId ? 'block' : 'none';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadMorePosts();
+      document.addEventListener('scroll', checkScroll);
+
+      renderPosts();
+      renderFriends();
+      renderFriendRequests();
+      renderMessages();
+      renderGroups();
+
+      const refreshFeedButton = document.getElementById('refresh-feed');
+      refreshFeedButton.addEventListener('click', () => {
+        currentPage = 1;
+        document.getElementById('post-container').innerHTML = '';
+        loadMorePosts();
+      });
+
+      const postButton = document.querySelector('.create-post button');
+      const postTextarea = document.querySelector('.create-post textarea');
+      const tagFriendsSelect = document.querySelector('.create-post select');
+
+      postButton.addEventListener('click', () => {
+        const postContent = postTextarea.value.trim();
+        if (postContent) {
+          const taggedFriends = Array.from(tagFriendsSelect.selectedOptions).map(option => option.text);
+          const newPost = {
+            id: posts.length + 1,
+            author: 'You',
+            content: postContent,
+            likes: 0,
+            comments: [],
+            taggedFriends: taggedFriends.length > 0 ? taggedFriends : null
+          };
+          posts.unshift(newPost);
+          renderPosts();
+          postTextarea.value = '';
+          tagFriendsSelect.selectedIndex = 0;
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('like-button')) {
+          const postId = parseInt(e.target.dataset.postId);
+          const post = posts.find(p => p.id === postId);
+          if (post) {
+            post.likes++;
+            renderPosts();
+          }
+        } else if (e.target.classList.contains('action-button') && e.target.textContent === 'Share') {
+          const postId = parseInt(e.target.closest('.post').querySelector('.like-button').dataset.postId);
+          const post = posts.find(p => p.id === postId);
+          if (post) {
+            const sharedPost = {
+              id: posts.length + 1,
+              author: 'You',
+              content: `Shared post from ${post.author}: ${post.content}`,
+              likes: 0,
+              comments: []
+            };
+            posts.unshift(sharedPost);
+            renderPosts();
+          }
+        } else if (e.target.classList.contains('message-friend')) {
+          const friendId = parseInt(e.target.dataset.friendId);
+          const friend = friends.find(f => f.id === friendId);
+          if (friend) {
+            showContent('messages-content');
+            document.getElementById('new-message-input').placeholder = `Type a message to ${friend.name}...`;
+          }
+        } else if (e.target.classList.contains('remove-friend')) {
+          const friendId = parseInt(e.target.dataset.friendId);
+          friends = friends.filter(f => f.id !== friendId);
+          renderFriends();
+        } else if (e.target.classList.contains('accept-request')) {
+          const friendId = parseInt(e.target.dataset.friendId);
+          const friend = friendRequests.find(f => f.id === friendId);
+          if (friend) {
+            friends.push(friend);
+            friendRequests = friendRequests.filter(f => f.id !== friendId);
+            renderFriends();
+            renderFriendRequests();
+          }
+        } else if (e.target.classList.contains('decline-request')) {
+          const friendId = parseInt(e.target.dataset.friendId);
+          friendRequests = friendRequests.filter(f => f.id !== friendId);
+          renderFriendRequests();
+        } else if (e.target.classList.contains('join-group')) {
+          const groupId = parseInt(e.target.dataset.groupId);
+          const group = groups.find(g => g.id === groupId);
+          if (group) {
+            group.members++;
+            e.target.textContent = 'Leave Group';
+            e.target.classList.remove('join-group');
+            e.target.classList.add('leave-group');
+            renderGroups();
+          }
+        } else if (e.target.classList.contains('leave-group')) {
+          const groupId = parseInt(e.target.dataset.groupId);
+          const group = groups.find(g => g.id === groupId);
+          if (group) {
+            group.members--;
+            e.target.textContent = 'Join Group';
+            e.target.classList.remove('leave-group');
+            e.target.classList.add('join-group');
+            renderGroups();
+          }
+        }
+      });
+
+      document.addEventListener('keypress', (e) => {
+        if (e.target.classList.contains('comment-input') && e.key === 'Enter') {
+          const postId = parseInt(e.target.dataset.postId);
+          const commentContent = e.target.value.trim();
+          if (commentContent) {
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+              post.comments.push({
+                author: 'You',
+                content: commentContent
+              });
+              renderPosts();
+            }
+          }
+        }
+      });
+
+      document.getElementById('home-link').addEventListener('click', () => showContent('home-content'));
+      document.getElementById('messages-link').addEventListener('click', () => showContent('messages-content'));
+      document.getElementById('profile-link').addEventListener('click', () => showContent('profile-content'));
+      document.getElementById('friends-link').addEventListener('click', () => showContent('friends-content'));
+      document.getElementById('groups-link').addEventListener('click', () => showContent('groups-content'));
+
+      document.getElementById('send-message-button').addEventListener('click', () => {
+        const messageInput = document.getElementById('new-message-input');
+        const messageContent = messageInput.value.trim();
+        if (messageContent) {
+          const newMessage = {
+            id: messages.length + 1,
+            sender: 'You',
+            content: messageContent,
+            timestamp: new Date().toLocaleString()
+          };
+          messages.push(newMessage);
+          renderMessages();
+          messageInput.value = '';
+        }
+      });
+
+      document.getElementById('edit-profile').addEventListener('click', () => {
+        const profileInfo = document.getElementById('profile-info');
+        const currentName = profileInfo.querySelector('h3').textContent;
+        const currentBio = profileInfo.querySelector('p').textContent.replace('Bio: ', '');
+
+        profileInfo.innerHTML = `
+          <img src="https://ui-avatars.com/api/?name=You" alt="Your avatar" class="avatar" style="width: 100px; height: 100px;">
+          <input type="text" id="edit-name" value="${currentName}">
+          <textarea id="edit-bio">${currentBio}</textarea>
+          <button id="save-profile">Save Profile</button>
+        `;
+
+        document.getElementById('save-profile').addEventListener('click', () => {
+          const newName = document.getElementById('edit-name').value.trim();
+          const newBio = document.getElementById('edit-bio').value.trim();
+
+          profileInfo.innerHTML = `
+            <img src="https://ui-avatars.com/api/?name=${newName}" alt="Your avatar" class="avatar" style="width: 100px; height: 100px;">
+            <h3>${newName}</h3>
+            <p>Bio: ${newBio}</p>
+            <button id="edit-profile">Edit Profile</button>
+          `;
+        });
+      });
+
+      document.getElementById('create-group').addEventListener('click', () => {
+        const groupName = prompt('Enter the name for your new group:');
+        if (groupName) {
+          const newGroup = {
+            id: groups.length + 1,
+            name: groupName,
+            members: 1
+          };
+          groups.push(newGroup);
+          renderGroups();
+        }
+      });
+
+      // Initialize trending topics
+      const trendingTopics = ['#SummerVibes', '#TechNews', '#HealthyLiving', '#TravelDreams', '#BookLovers'];
+      const trendingTopicsList = document.getElementById('trending-topics');
+      trendingTopics.forEach(topic => {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="#${topic.substring(1)}">${topic}</a>`;
+        trendingTopicsList.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ConnectHub - Your Profile</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+  }
+  .header {
+    background-color: #1877f2;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 60px auto 0;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .sidebar {
+    flex: 1;
+    min-width: 200px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-right: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 80px;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  .main-content {
+    flex: 3;
+    min-width: 300px;
+  }
+  .profile-header {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+  }
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  .profile-info {
+    flex-grow: 1;
+  }
+  .profile-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .profile-bio {
+    font-size: 16px;
+    color: #65676B;
+    margin-bottom: 10px;
+  }
+  .profile-stats {
+    display: flex;
+    justify-content: space-between;
+    max-width: 300px;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .stat-label {
+    font-size: 14px;
+    color: #65676B;
+  }
+  .profile-actions {
+    margin-top: 20px;
+  }
+  .profile-actions button {
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  .profile-actions button:hover {
+    background-color: #166fe5;
+  }
+  .post {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .post-author {
+    font-weight: bold;
+  }
+  .post-timestamp {
+    color: #65676B;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+  .post-content {
+    margin-bottom: 10px;
+  }
+  .post-actions {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #e4e6eb;
+    padding-top: 10px;
+  }
+  .post-actions button {
+    background-color: transparent;
+    border: none;
+    color: #65676B;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+  .post-actions button:hover {
+    background-color: #f2f3f5;
+    border-radius: 4px;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+  }
+  .nav-menu {
+    list-style-type: none;
+    padding: 0;
+  }
+  .nav-menu li {
+    margin-bottom: 10px;
+  }
+  .nav-menu a {
+    text-decoration: none;
+    color: #1877f2;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  .nav-menu a:hover {
+    color: #165aad;
+  }
+  .profile-photos {
+    margin-top: 20px;
+  }
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .profile-photo {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .post-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">ConnectHub</div>
+  </header>
+  
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Menu</h2>
+      <ul class="nav-menu"
+        <li><a href="home.html"
+        <li><a href="profile.html"
+        <li><a href="messages.html"
+        <li><a href="friends.html"
+        <li><a href="groups.html"
+      </ul>
+    </aside>
+    
+    <main class="main-content">
+      <div class="profile-header">
+        <img src="https://example.com/arlene-profile-pic.jpg" alt="Arlene Angob" class="profile-picture">
+        
+        <div class="profile-info">
+          <h1 class="profile-name">Arlene Angob</h1>
+          <p class="profile-bio">Passionate about technology, travel, and making new connections.</p>
+          <div class="profile-stats">
+            <div class="stat">
+              <div class="stat-value">250</div>
+              <div class="stat-label">Friends</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">50</div>
+              <div class="stat-label">Photos</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">10</div>
+              <div class="stat-label">Groups</div>
+            </div>
+          </div>
+          <div class="profile-actions">
+            <button id="edit-profile">Edit Profile</button>
+            <button id="add-story">Add Story</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-photos">
+        <h2>Photos</h2>
+        <div class="photo-grid">
+          <img src="c:\Users\PC 11\Downloads\4.jfif" alt="Photo 1" class="profile-photo">
+          <img src="c:\Users\PC 11\Downloads\2.jfif" alt="Photo 2" class="profile-photo">
+          <img src="c:\Users\PC 11\Downloads\3.jfif" alt="Photo 3" class="profile-photo">
+          <img src="c:\Users\PC 11\Downloads\download (1).jfif" alt="Photo 4" class="profile-photo">
+          <img src="c:\Users\PC 11\Downloads\2.jfif" alt="Photo 5" class="profile-photo">
+          <img src="c:\Users\PC 11\Downloads\3.jfif" alt="Photo 6" class="profile-photo">
+        </div>
+      </div>
+
+      <div id="profile-posts">
+        <div class="post">
+          <div class="post-header">
+            <img src="c:\Users\PC 11\Downloads\1.jfif" alt="Arlene Angob" class="post-avatar">
+            <span class="post-author">Arlene Angob</span>
+            <span class="post-timestamp">2 hours ago</span>
+          </div>
+          <img src="c:\Users\PC 11\Downloads\4.jfif" alt="Post image" class="post-image">
+          <div class="post-content">
+            <p>Enjoying a beautiful day at the beach! 🏖️ #SummerVibes</p>
+          </div>
+          <div class="post-actions">
+            <button>Like</button>
+            <button>Comment</button>
+            <button>Share</button>
+          </div>
+        </div>
+
+        <div class="post">
+          <div class="post-header">
+            <img src="c:\Users\PC 11\Downloads\2.jfif" alt="John Smith" class="post-avatar">
+            <span class="post-author">John Smith</span>
+            <span class="post-timestamp">5 hours ago</span>
+          </div>
+          <div class="post-content">
+            <p>Just finished reading an amazing book! Has anyone else read "The Alchemist" by Paulo Coelho? Highly recommend it! 📚</p>
+          </div>
+          <div class="post-actions">
+            <button>Like</button>
+            <button>Comment</button>
+            <button>Share</button>
+          </div>
+        </div>
+
+        <div class="post">
+          <div class="post-header">
+            <img src="c:\Users\PC 11\Downloads\3.jfif" alt="Sarah Johnson" class="post-avatar">
+            <span class="post-author">Sarah Johnson</span>
+            <span class="post-timestamp">Yesterday</span>
+          </div>
+          <img src="c:\Users\PC 11\Downloads\5.jfif" alt="Post image" class="post-image">
+          <div class="post-content">
+            <p>Just adopted this cutie from the local shelter! Meet Max! 🐶 #AdoptDontShop</p>
+          </div>
+          <div class="post-actions">
+            <button>Like</button>
+            <button>Comment</button>
+            <button>Share</button>
+          </div>
+        </div>
+
+        <div class="post">
+          <div class="post-header">
+            <img src="c:\Users\PC 11\Downloads\5.jfif" alt="Arlene Angob" class="post-avatar">
+            <span class="post-author">Arlene Angob</span>
+            <span class="post-timestamp">2 days ago</span>
+          </div>
+          <div class="post-content">
+            <p>Excited to announce that I've started learning a new programming language! 💻 #CodingLife #NeverStopLearning</p>
+          </div>
+          <div class="post-actions">
+            <button>Like</button>
+            <button>Comment</button>
+            <button>Share</button>
+          </div>
+        </div>
+
+        <div class="post">
+          <div class="post-header">
+            <img src="c:\Users\PC 11\Downloads\4.jfif" alt="Mike Brown" class="post-avatar">
+            <span class="post-author">Mike Brown</span>
+            <span class="post-timestamp">3 days ago</span>
+          </div>
+          <img src="c:\Users\PC 11\Downloads\2.jfif" alt="Post image" class="post-image">
+          <div class="post-content">
+            <p>Just completed my first marathon! It was tough, but so rewarding. 🏃‍♂️🏅 #RunningGoals</p>
+          </div>
+          <div class="post-actions">
+            <button>Like</button>
+            <button>Comment</button>
+            <button>Share</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const editProfileButton = document.getElementById('edit-profile');
+      const addStoryButton = document.getElementById('add-story');
+
+      editProfileButton.addEventListener('click', () => {
+        const profileInfo = document.querySelector('.profile-info');
+        const currentName = profileInfo.querySelector('.profile-name').textContent;
+        const currentBio = profileInfo.querySelector('.profile-bio').textContent;
+
+        profileInfo.innerHTML = `
+          <input type="text" id="edit-name" value="${currentName}" style="font-size: 24px; font-weight: bold; margin-bottom: 10px; width: 100%;">
+          <textarea id="edit-bio" style="width: 100%; height: 60px; margin-bottom: 10px;">${currentBio}</textarea>
+          <button id="save-profile" style="background-color: #1877f2; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Save Profile</button>
+        `;
+
+        document.getElementById('save-profile').addEventListener('click', () => {
+          const newName = document.getElementById('edit-name').value;
+          const newBio = document.getElementById('edit-bio').value;
+
+          profileInfo.innerHTML = `
+            <h1 class="profile-name">${newName}</h1>
+            <p class="profile-bio">${newBio}</p>
+            <div class="profile-stats">
+              <div class="stat">
+                <div class="stat-value">250</div>
+                <div class="stat-label">Friends</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">50</div>
+                <div class="stat-label">Photos</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">10</div>
+                <div class="stat-label">Groups</div>
+              </div>
+            </div>
+            <div class="profile-actions">
+              <button id="edit-profile">Edit Profile</button>
+              <button id="add-story">Add Story</button>
+            </div>
+          `;
+
+          // Update avatar
+          document.querySelector('.profile-picture').src = `https://ui-avatars.com/api/?name=${newName}&size=150`;
+
+          // Reattach event listeners
+          document.getElementById('edit-profile').addEventListener('click', editProfileButton.onclick);
+          document.getElementById('add-story').addEventListener('click', addStoryButton.onclick);
+        });
+      });
+
+      addStoryButton.addEventListener('click', () => {
+        alert('Story feature coming soon!');
+      });
+    });
+  </script>
+</body>
+</html>
